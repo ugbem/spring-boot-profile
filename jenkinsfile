@@ -1,23 +1,12 @@
+Jenkinsfile (Declarative Pipeline)
+/* Requires the Docker Pipeline plugin */
 pipeline {
-    agent any
-
+    agent { docker { image 'maven:3.9.6-eclipse-temurin-17-alpine' } }
     stages {
-        stage('Build') {
+        stage('build') {
             steps {
-                script {
-                    def mvnHome = tool 'Maven'
-                    sh "${mvnHome}/bin/mvn clean install"
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                script {
-                    sh "java -jar target/spring-demo-1.0-SNAPSHOT.jar &"
-                }
+                sh 'mvn --version'
             }
         }
     }
 }
-
