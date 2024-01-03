@@ -1,30 +1,27 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy JAR app to Azure Web App - eugbem
+name: Build and deploy JAR app to Ubuntu Server
 
 on:
   push:
     branches:
-      - origin-master
-  workflow_dispatch:
+      - dev
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Set up Java version
-        uses: actions/setup-java@v1
+      - name: Set up Java
+        uses: actions/setup-java@v2
         with:
           java-version: '11'
 
       - name: Build with Maven
         run: mvn clean install
 
-      - name: Upload artifact for deployment job
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v2
         with:
           name: java-app
@@ -32,22 +29,29 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
           name: java-app
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+      - name: Copy JAR to Ubuntu Server
+        uses: appleboy/scp-action@v2
         with:
-          app-name: 'eugbem'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_73110AB071334FDABB5137BCD9FF3CC9 }}
-          package: '*.jar'
+          host: ${{ secrets.SERVER_SSH_HOST }}
+          username: ${{ secrets.SERVER_SSH_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          source: "java-app/*.jar"
+          target: "/home/ubuntu/"
+
+      - name: SSH into Ubuntu Server and restart application
+        uses: appleboy/ssh-action@v2
+        with:
+          host: ${{ secrets.SERVER_SSH_HOST }}
+          username: ${{ secrets.SERVER_SSH_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/
+            # Add any additional commands needed to restart your application here
+
