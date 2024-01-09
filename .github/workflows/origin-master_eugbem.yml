@@ -1,4 +1,4 @@
-name: Build and deploy JAR app to Ubuntu Server
+name: Build and Deploy
 
 on:
   push:
@@ -6,52 +6,38 @@ on:
       - dev
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Java
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-
-      - name: Build with Maven
-        run: mvn clean install
-
-      - name: Upload artifact for deployment
-        uses: actions/upload-artifact@v2
-        with:
-          name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Build with Maven
+      run: mvn package --file pom.xml
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
-
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: java-app
-
-      - name: Copy JAR to Ubuntu Server
-        uses: appleboy/scp-action@v2
-        with:
-          host: ${{ secrets.SERVER_SSH_HOST }}
-          username: ${{ secrets.SERVER_SSH_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-          source: "java-app/*.jar"
-          target: "/home/ubuntu/"
-
-      - name: SSH into Ubuntu Server and restart application
-        uses: appleboy/ssh-action@v2
-        with:
-          host: ${{ secrets.SERVER_SSH_HOST }}
-          username: ${{ secrets.SERVER_SSH_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-          script: |
-            cd /home/ubuntu/
-            # Add any additional commands needed to restart your application here
-
+    
+    - name: Download artifact
+      uses: actions/download-artifact@main
+      with:
+        name: java-app
+        path: target
+    
+        
+    - name: Deploy to Ubuntu server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        script: |
+          mkdir -p /var/www/myapp
+          rm -rf /var/www/myapp/*
+          cp -r target/*.jar /var/www/myapp
+          
