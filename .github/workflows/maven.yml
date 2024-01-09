@@ -45,11 +45,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD}}
           script: |
-            # Navigate to the directory where you want to deploy
-            cd /tmp
-
-            # Upload the JAR file to the server
-            scp java-app/*.jar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/tmp
-
-            # Restart the application or perform any other deployment steps
-            
+            mkdir -p /var/www/myapp
+            rm -rf /var/www/myapp/*
+            cp -r target/*.jar /var/www/myapp
