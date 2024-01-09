@@ -38,6 +38,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          mkdir -p /opt/app
-          cp *.jar /opt/app
-          screen java -jar *.jar
+          echo $USER
