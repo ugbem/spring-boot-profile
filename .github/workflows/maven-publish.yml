@@ -3,7 +3,7 @@ name: Maven Package and Deploy
 on:
   push:
     branches:
-      - master # You can specify the branch you want to trigger on push
+      - dev # You can specify the branch you want to trigger on push
 
 jobs:
   build-and-deploy:
