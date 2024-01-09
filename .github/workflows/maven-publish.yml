@@ -28,11 +28,16 @@ jobs:
       with:
         name: java-app
         path: target
+    - name: Log secrets
+      run: |
+        echo "Host: ${{ secrets.HOST }}" 
+        echo "Username: ${{ secrets.USERNAME }}"
+        echo "key: ${{ secrets.SSH_PRIVATE_KEY }}"
         
     - name: Deploy to Ubuntu server
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.SERVER_HOST }}
+        host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }} 
         script: |
