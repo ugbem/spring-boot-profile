@@ -23,7 +23,7 @@ jobs:
         run: mvn clean install
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
@@ -37,7 +37,6 @@ jobs:
       uses: actions/download-artifact@v3
       with: 
         name: java-app
-    
         
     - name: Deploy to Ubuntu server
       uses: appleboy/ssh-action@master
