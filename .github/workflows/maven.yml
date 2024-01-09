@@ -3,7 +3,7 @@ name: Build and deploy JAR app to Ubuntu Server
 on:
   push:
     branches:
-      - origin-master
+      - master
   workflow_dispatch:
 
 jobs:
