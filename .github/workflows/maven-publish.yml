@@ -49,7 +49,7 @@ jobs:
             cd /tmp
 
             # Upload the JAR file to the server
-            scp java-app/*.jar ${{ secrets.SERVER_USERNAME }}@$	54.160.108.3:/tmp
+            scp java-app/*.jar ${{ secrets.SERVER_USERNAME }}@:${{ secrets.SERVER_HOST }}/tmp
 
             # Restart the application or perform any other deployment steps
            
