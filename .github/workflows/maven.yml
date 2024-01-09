@@ -29,22 +29,24 @@ jobs:
           path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
-    runs-on: ubuntu-latest
     needs: build
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: java-app
-
-      - name: Deploy to Ubuntu Server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD}}
-          script: |
-            mkdir -p /var/www/myapp
-            rm -rf /var/www/myapp/*
-            cp -r target/*.jar /var/www/myapp
+    
+    - name: Download artifact
+      uses: actions/download-artifact@main
+      with:
+        name: app
+        path: target
+    
+        
+    - name: Deploy to Ubuntu server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        script: |
+          mkdir -p /var/www/myapp
+          rm -rf /var/www/myapp/*
+          cp -r target/*.jar /var/www/myapp
