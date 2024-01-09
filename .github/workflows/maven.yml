@@ -23,7 +23,7 @@ jobs:
         run: mvn clean install
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
@@ -34,10 +34,9 @@ jobs:
     steps:
     
     - name: Download artifact
-      uses: actions/download-artifact@main
-      with:
+      uses: actions/download-artifact@v3
+      with: 
         name: java-app
-        path: target
     
         
     - name: Deploy to Ubuntu server
