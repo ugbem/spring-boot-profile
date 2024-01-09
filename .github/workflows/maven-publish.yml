@@ -37,10 +37,10 @@ jobs:
           cd /home/ubuntu
 
           # Upload the JAR file to the server
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} target/*.jar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/ubuntu
+          scp  ${{ secrets.SSH_PRIVATE_KEY }} target/*.jar ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:/home/ubuntu
 
           # Restart the application or perform any other deployment steps
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "sudo systemctl restart your-application"
+          ssh  ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }} "screen java -jar *.jar"
 
   publish:
     needs: build-and-deploy
