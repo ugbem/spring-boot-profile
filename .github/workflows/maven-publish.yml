@@ -33,7 +33,6 @@ jobs:
       uses: actions/download-artifact@master
       with:
         name: app
-        path: target
     
     - name: Deploy to Ubuntu server
       uses: appleboy/ssh-action@dev
@@ -44,5 +43,5 @@ jobs:
         script: |
           mkdir -p /home/ubuntu/myapp
           rm -rf /home/ubuntu/myapp/*
-          cp app /home/ubuntu/myapp
+          cp target/*.jar /home/ubuntu/myapp
           
