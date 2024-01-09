@@ -46,7 +46,6 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         script: |
-          mkdir -p /home/ubuntu/www/myapp
-          rm -rf /home/ubuntu/www/myapp/*
-          cp target/*.jar /home/ubuntu/www/myapp/
+          scp target/*.jar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/ubuntu/www/myapp
+          
           
