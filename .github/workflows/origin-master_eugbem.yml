@@ -28,16 +28,14 @@ jobs:
       with:
         name: java-app
         path: target
-    
         
     - name: Deploy to Ubuntu server
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }} 
         script: |
           mkdir -p /var/www/myapp
           rm -rf /var/www/myapp/*
           cp -r target/*.jar /var/www/myapp
-          
