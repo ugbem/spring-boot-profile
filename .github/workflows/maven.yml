@@ -3,7 +3,7 @@ name: Build and deploy JAR app to Ubuntu Server
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
@@ -39,7 +39,7 @@ jobs:
         name: java-app
         
     - name: Deploy to Ubuntu server
-      uses: appleboy/ssh-action@main
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
