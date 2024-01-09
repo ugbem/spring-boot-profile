@@ -47,5 +47,5 @@ jobs:
         script: |
           mkdir -p /home/ubuntu/www/myapp
           rm -rf /home/ubuntu/www/myapp/*
-          cp -r target/*.jar /home/ubuntu/www/myapp
+          cp -r *.jar /home/ubuntu/www/myapp
           
