@@ -17,6 +17,11 @@ jobs:
         java-version: 11
     - name: Build with Maven
       run: mvn package --file pom.xml
+    - name: Upload artifact  
+      uses: actions/upload-artifact@v2
+      with:
+        name: java-app
+        path: target/*.jar
 
   deploy:
     needs: build
@@ -30,12 +35,12 @@ jobs:
         path: target
         
     - name: Deploy to Ubuntu server
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@dev
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         script: |
-          mkdir -p /var/www/myapp
-          rm -rf /var/www/myapp/*
-          cp -r target/*.jar /var/www/myapp
+          mkdir -p /tmp/app
+          rm -rf /tmp/app*
+          cp -r target/*.jar /tmp/app
