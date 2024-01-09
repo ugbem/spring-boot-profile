@@ -15,6 +15,7 @@ pipeline {
             steps {
                 script {
                     sh "java -jar target/spring-demo-1.0-SNAPSHOT.jar &"
+
                 }
             }
         }
