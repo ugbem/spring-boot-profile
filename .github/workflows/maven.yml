@@ -37,6 +37,7 @@ jobs:
       uses: actions/download-artifact@v3
       with: 
         name: java-app
+        path: '${{ github.workspace }}/target'
         
     - name: Deploy to Ubuntu server
       uses: appleboy/ssh-action@master
@@ -47,5 +48,5 @@ jobs:
         script: |
           mkdir -p /home/ubuntu/www/myapp
           rm -rf /home/ubuntu/www/myapp/*
-          ls .
+          cp target/*.jar /home/ubuntu/www/myapp/
           
