@@ -41,6 +41,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }} 
         script: |
-          mkdir -p /var/www/myapp
-          rm -rf /var/www/myapp/*
-          cp -r target/*.jar /var/www/myapp
+          echo $USER
