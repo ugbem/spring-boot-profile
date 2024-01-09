@@ -17,11 +17,6 @@ jobs:
         java-version: 11
     - name: Build with Maven
       run: mvn package --file pom.xml
-    - name: Log secrets
-      run: |
-        echo "Host: ${{ secrets.HOST }}" 
-        echo "Username: ${{ secrets.USERNAME }}"
-        echo "key: ${{ secrets.SSH_PRIVATE_KEY }}"
 
   deploy:
     needs: build
@@ -40,6 +35,8 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }} 
+        key: ${{ secrets.PASSWORD }} 
         script: |
-          echo $USER
+          mkdir -p /var/www/myapp
+          rm -rf /var/www/myapp/*
+          cp -r target/*.jar /var/www/myapp
