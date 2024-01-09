@@ -36,6 +36,8 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ secrets.PASSWORD }}
         script: |
-          echo $USER
+          mkdir -p /var/www/myapp
+          rm -rf /var/www/myapp/*
+          cp -r target/*.jar /var/www/myapp
