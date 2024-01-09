@@ -21,7 +21,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: app
+        name: java-app
         path: target/*.jar
 
   deploy:
@@ -32,7 +32,7 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@master
       with:
-        name: app
+        name: java-app
     
     - name: Deploy to Ubuntu server
       uses: appleboy/ssh-action@master
@@ -43,5 +43,5 @@ jobs:
         script: |
           mkdir -p /home/ubuntu/myapp
           rm -rf /home/ubuntu/myapp/*
-          cp app /home/ubuntu/myapp
+          cp target/*.jar /home/ubuntu/myapp
           
